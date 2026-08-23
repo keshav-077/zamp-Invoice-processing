@@ -1,0 +1,57 @@
+[
+  {
+    "po_id": "PO-1001", "vendor_id": "V-001", "currency": "USD", "status": "open",
+    "issue_date": "2026-01-01", "total_value": "4860.00", "remaining_value": "4860.00",
+    "lines": [{"line_id": "POL-1001-1", "item_code": "CHR-001", "description": "Office chairs ergonomic", "ordered_qty": "10", "invoiced_qty": "0", "remaining_qty": "10", "unit_price": "450.00", "line_total": "4500.00"}]
+  },
+  {
+    "po_id": "PO-1002", "vendor_id": "V-002", "currency": "USD", "status": "open",
+    "issue_date": "2026-01-05", "total_value": "12960.00", "remaining_value": "12960.00",
+    "lines": [{"line_id": "POL-1002-1", "item_code": "LAP-T14", "description": "ThinkPad T14 laptops", "ordered_qty": "8", "invoiced_qty": "0", "remaining_qty": "8", "unit_price": "1500.00", "line_total": "12000.00"}]
+  },
+  {
+    "po_id": "PO-1003", "vendor_id": "V-003", "currency": "USD", "status": "open",
+    "issue_date": "2026-01-10", "total_value": "2700.00", "remaining_value": "2700.00",
+    "lines": [{"line_id": "POL-1003-1", "item_code": "PAP-A4", "description": "Copy paper A4 80gsm", "ordered_qty": "500", "invoiced_qty": "0", "remaining_qty": "500", "unit_price": "5.00", "line_total": "2500.00"}]
+  },
+  {
+    "po_id": "PO-1004", "vendor_id": "V-003", "currency": "USD", "status": "open",
+    "issue_date": "2026-01-12", "total_value": "2700.00", "remaining_value": "2700.00",
+    "lines": [{"line_id": "POL-1004-1", "item_code": "PAP-A4", "description": "Copy paper A4 80gsm premium", "ordered_qty": "500", "invoiced_qty": "0", "remaining_qty": "500", "unit_price": "5.00", "line_total": "2500.00"}]
+  },
+  {
+    "po_id": "PO-1005", "vendor_id": "V-004", "currency": "USD", "status": "partial",
+    "issue_date": "2025-12-01", "total_value": "32400.00", "remaining_value": "16200.00",
+    "lines": [{"line_id": "POL-1005-1", "item_code": "STL-A", "description": "Steel beams grade A", "ordered_qty": "60", "invoiced_qty": "30", "remaining_qty": "30", "unit_price": "500.00", "line_total": "30000.00"}]
+  },
+  {
+    "po_id": "PO-1006", "vendor_id": "V-005", "currency": "USD", "status": "open",
+    "issue_date": "2026-01-08", "total_value": "5400.00", "remaining_value": "5400.00",
+    "lines": [{"line_id": "POL-1006-1", "item_code": "SVC-JAN", "description": "Monthly janitorial services", "ordered_qty": "1", "invoiced_qty": "0", "remaining_qty": "1", "unit_price": "5400.00", "line_total": "5400.00"}]
+  },
+  {
+    "po_id": "PO-1007", "vendor_id": "V-007", "currency": "USD", "status": "open",
+    "issue_date": "2026-01-15", "total_value": "3240.00", "remaining_value": "3240.00",
+    "lines": [{"line_id": "POL-1007-1", "item_code": "MISC-01", "description": "Misc supplies", "ordered_qty": "1", "invoiced_qty": "0", "remaining_qty": "1", "unit_price": "3000.00", "line_total": "3000.00"}]
+  },
+  {
+    "po_id": "PO-1008", "vendor_id": "V-008", "currency": "USD", "status": "open",
+    "issue_date": "2026-01-03", "total_value": "864.00", "remaining_value": "864.00",
+    "lines": [{"line_id": "POL-1008-1", "item_code": "SVC-SCAN", "description": "Document scanning services", "ordered_qty": "1", "invoiced_qty": "0", "remaining_qty": "1", "unit_price": "800.00", "line_total": "800.00"}]
+  },
+  {
+    "po_id": "PO-1009", "vendor_id": "V-006", "currency": "EUR", "status": "open",
+    "issue_date": "2026-01-06", "total_value": "5000.00", "remaining_value": "5000.00",
+    "lines": [{"line_id": "POL-1009-1", "item_code": "EUR-01", "description": "European office supplies", "ordered_qty": "100", "invoiced_qty": "0", "remaining_qty": "100", "unit_price": "45.00", "line_total": "4500.00"}]
+  },
+  {
+    "po_id": "PO-1010", "vendor_id": "V-009", "currency": "USD", "status": "closed",
+    "issue_date": "2025-06-01", "total_value": "1500.00", "remaining_value": "0.00",
+    "lines": [{"line_id": "POL-1010-1", "item_code": "LOG-01", "description": "Freight services", "ordered_qty": "1", "invoiced_qty": "1", "remaining_qty": "0", "unit_price": "1500.00", "line_total": "1500.00"}]
+  },
+  {
+    "po_id": "PO-1011", "vendor_id": "V-010", "currency": "USD", "status": "cancelled",
+    "issue_date": "2025-11-01", "total_value": "8000.00", "remaining_value": "8000.00",
+    "lines": [{"line_id": "POL-1011-1", "item_code": "SEC-01", "description": "Security audit", "ordered_qty": "1", "invoiced_qty": "0", "remaining_qty": "1", "unit_price": "8000.00", "line_total": "8000.00"}]
+  }
+]

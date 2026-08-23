@@ -9,11 +9,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.models import Invoice, InvoiceLine, PurchaseOrder, PurchaseOrderLine, Vendor
 from app.utils.normalize import normalize_invoice_number, normalize_text
 
-# Repository root: apps/api/app/fixtures/seed.py -> parents[4]
-REPO_ROOT = Path(__file__).resolve().parents[4]
-DATA_DIR = REPO_ROOT / "data"
-VENDORS_JSON = DATA_DIR / "vendors.json"
-PURCHASE_ORDERS_JSON = DATA_DIR / "purchase_orders.json"
+# apps/api/app/fixtures/seed.py -> fixtures live alongside this module
+FIXTURES_DIR = Path(__file__).resolve().parent
+VENDORS_JSON = FIXTURES_DIR / "vendors.json"
+PURCHASE_ORDERS_JSON = FIXTURES_DIR / "purchase_orders.json"
 
 PRIOR_INVOICE = {
     "vendor_id": "V-009",

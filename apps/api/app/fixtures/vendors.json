@@ -1,0 +1,12 @@
+[
+  {"vendor_id": "V-001", "legal_name": "Acme Office Supplies Inc.", "aliases": ["Acme Office", "ACME"], "tax_id": "TAX-ACME-001", "currency": "USD", "status": "active"},
+  {"vendor_id": "V-002", "legal_name": "TechPro Solutions LLC", "aliases": ["TechPro", "Tech Pro Solutions"], "tax_id": "TAX-TECH-002", "currency": "USD", "status": "active"},
+  {"vendor_id": "V-003", "legal_name": "Global Paper Co", "aliases": ["GPC", "Global Paper Company"], "tax_id": "TAX-GPC-003", "currency": "USD", "status": "active"},
+  {"vendor_id": "V-004", "legal_name": "BuildRight Construction", "aliases": ["BuildRight"], "tax_id": "TAX-BRC-004", "currency": "USD", "status": "active"},
+  {"vendor_id": "V-005", "legal_name": "CleanServe Facilities", "aliases": ["CleanServe"], "tax_id": "TAX-CSF-005", "currency": "USD", "status": "active"},
+  {"vendor_id": "V-006", "legal_name": "EuroSupply GmbH", "aliases": ["Euro Supply"], "tax_id": "TAX-EURO-006", "currency": "EUR", "status": "active"},
+  {"vendor_id": "V-007", "legal_name": "DataStream Analytics", "aliases": ["DataStream"], "tax_id": "TAX-DS-007", "currency": "USD", "status": "active"},
+  {"vendor_id": "V-008", "legal_name": "ScanQuality Ltd", "aliases": ["Scan Quality"], "tax_id": "TAX-SQ-008", "currency": "USD", "status": "active"},
+  {"vendor_id": "V-009", "legal_name": "Metro Logistics Inc.", "aliases": ["Metro Log"], "tax_id": "TAX-ML-009", "currency": "USD", "status": "active"},
+  {"vendor_id": "V-010", "legal_name": "SecureNet Systems", "aliases": ["SecureNet"], "tax_id": "TAX-SN-010", "currency": "USD", "status": "active"}
+]

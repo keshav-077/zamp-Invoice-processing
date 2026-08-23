@@ -10,7 +10,6 @@ COPY apps/api/requirements.txt ./apps/api/requirements.txt
 RUN pip install --no-cache-dir -r apps/api/requirements.txt
 
 COPY apps/api ./apps/api
-COPY data/vendors.json data/purchase_orders.json ./data/
 
 RUN mkdir -p /data/uploads
 
