@@ -69,9 +69,10 @@ Deploy the full stack (API + web + Postgres) on [Railway](https://railway.app).
 
 ### 2. API service
 
-1. Add a service from the repo with **Root Directory** set to the repository root.
-2. Set **Config file** to `apps/api/railway.toml` (or use Dockerfile `apps/api/Dockerfile`).
-3. Attach a **volume** mounted at `/data/uploads`.
+1. Add a service from the repo with **Root Directory** set to the **repository root** (leave blank / `/`).
+2. **Settings → Build → Builder:** must be **Dockerfile** (not Railpack/Nixpacks).
+3. **Settings → Config file:** `railway.toml` or `apps/api/railway.toml`.
+4. Attach a **volume** mounted at `/data/uploads`.
 4. Set environment variables:
 
 | Variable | Value |
@@ -87,10 +88,12 @@ Deploy the full stack (API + web + Postgres) on [Railway](https://railway.app).
 
 ### 3. Web service
 
-1. Add a second service with **Root Directory** `apps/web`.
-2. Set **Config file** to `apps/web/railway.toml`.
-3. Set build variable `NEXT_PUBLIC_API_URL` to the API service public URL.
-4. Generate a public domain for the web service.
+1. Add a **second** service from the same repo (do not reuse the API service).
+2. **Settings → Root Directory:** `apps/web`
+3. **Settings → Build → Builder:** **Dockerfile**
+4. **Settings → Config file:** `apps/web/railway.toml`
+5. Set build variable `NEXT_PUBLIC_API_URL` to the API service public URL.
+6. Generate a public domain for the web service.
 
 ### 4. Finalize CORS
 
@@ -110,6 +113,18 @@ After installing the Railway CLI (`npm install -g @railway/cli`) and running `ra
 ```
 
 Then complete the service setup steps printed by the script in the Railway dashboard.
+
+### Troubleshooting: "No start command detected" (Railpack)
+
+Railway may auto-detect the root `package.json` npm workspace and use **Railpack** instead of Docker. Fix:
+
+1. Open the service → **Settings** → **Build**
+2. Set **Builder** to **Dockerfile**
+3. **API service:** Dockerfile path `apps/api/Dockerfile`, root directory = repo root
+4. **Web service:** root directory = `apps/web`, Dockerfile path = `Dockerfile`
+5. Redeploy
+
+Or set the environment variable `RAILWAY_DOCKERFILE_PATH=apps/api/Dockerfile` on the API service.
 
 ## Design Principles
 
