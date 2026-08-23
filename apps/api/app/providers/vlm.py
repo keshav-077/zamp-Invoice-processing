@@ -31,6 +31,16 @@ Return ONLY valid JSON matching this schema:
 Use null for missing fields. Include confidence and source_page for each field."""
 
 
+def _mime_for_path(path: str) -> str:
+    ext = Path(path).suffix.lower()
+    return {
+        ".png": "image/png",
+        ".jpg": "image/jpeg",
+        ".jpeg": "image/jpeg",
+        ".webp": "image/webp",
+    }.get(ext, "image/png")
+
+
 def _http_error(provider: str, response: httpx.Response) -> RuntimeError:
     detail = response.text.strip().replace("\n", " ")
     if len(detail) > 500:
@@ -58,7 +68,7 @@ class GeminiProvider(ExtractionProvider):
             for p in image_paths:
                 parts.append(
                     types.Part.from_bytes(
-                        data=Path(p).read_bytes(), mime_type="image/png"
+                        data=Path(p).read_bytes(), mime_type=_mime_for_path(p)
                     )
                 )
             response = await client.aio.models.generate_content(
@@ -89,8 +99,9 @@ class GroqProvider(ExtractionProvider):
         settings = get_settings()
         content: list[dict[str, Any]] = [{"type": "text", "text": EXTRACTION_PROMPT}]
         for p in image_paths[:3]:
+            mime = _mime_for_path(p)
             b64 = base64.b64encode(Path(p).read_bytes()).decode()
-            content.append({"type": "image_url", "image_url": {"url": f"data:image/png;base64,{b64}"}})
+            content.append({"type": "image_url", "image_url": {"url": f"data:{mime};base64,{b64}"}})
         async with httpx.AsyncClient(timeout=120) as client:
             resp = await client.post(
                 "https://api.groq.com/openai/v1/chat/completions",
@@ -127,8 +138,9 @@ class OpenRouterProvider(ExtractionProvider):
         settings = get_settings()
         content: list[dict[str, Any]] = [{"type": "text", "text": EXTRACTION_PROMPT}]
         for p in image_paths[:3]:
+            mime = _mime_for_path(p)
             b64 = base64.b64encode(Path(p).read_bytes()).decode()
-            content.append({"type": "image_url", "image_url": {"url": f"data:image/png;base64,{b64}"}})
+            content.append({"type": "image_url", "image_url": {"url": f"data:{mime};base64,{b64}"}})
         async with httpx.AsyncClient(timeout=120) as client:
             resp = await client.post(
                 "https://openrouter.ai/api/v1/chat/completions",

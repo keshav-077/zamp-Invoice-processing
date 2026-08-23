@@ -34,7 +34,7 @@ from app.providers.factory import (
 )
 from app.rules.policy import PolicyEngine
 from app.rules.validation import ValidationEngine
-from app.services.documents import DocumentProcessor
+from app.services.documents import DocumentProcessor, is_pdf
 from app.services.duplicate import DuplicateService
 from app.services.normalizer import get_material_field_confidences, needs_verification, normalize_extraction, normalized_invoice_number
 from app.services.po_candidates import POCandidateService
@@ -110,12 +110,23 @@ class WorkflowOrchestrator:
         try:
             await self._emit(run, RunStage.UPLOADED, StageEventStatus.SUCCESS, f"Invoice uploaded: {run.file_name}")
 
-            await self._emit(run, RunStage.RENDERING, StageEventStatus.RUNNING, "Rendering PDF pages for analysis...")
-            image_paths = self.doc_processor.render_pages(run.run_id, run.file_path)
-            await self._emit(run, RunStage.RENDERING, StageEventStatus.SUCCESS, f"Rendered {len(image_paths)} page(s)", {"pages": len(image_paths)})
+            file_name = run.file_name or "invoice.pdf"
+            if is_pdf(file_name):
+                await self._emit(run, RunStage.RENDERING, StageEventStatus.RUNNING, "Rendering PDF pages for analysis...")
+            else:
+                await self._emit(run, RunStage.RENDERING, StageEventStatus.RUNNING, "Preparing image for analysis...")
+            image_paths = self.doc_processor.prepare_images(run.run_id, run.file_path)
+            page_label = "page" if len(image_paths) == 1 else "pages"
+            await self._emit(
+                run,
+                RunStage.RENDERING,
+                StageEventStatus.SUCCESS,
+                f"Prepared {len(image_paths)} {page_label}",
+                {"pages": len(image_paths)},
+            )
 
             await self._emit(run, RunStage.EXTRACTING, StageEventStatus.RUNNING, "Extracting invoice fields via multimodal model...")
-            extracted, model_meta = await extract_with_fallback(image_paths, run.file_name or "invoice.pdf")
+            extracted, model_meta = await extract_with_fallback(image_paths, file_name)
             run.extraction_data = extracted.model_dump()
             run.model_metadata = model_meta
             await self._emit(run, RunStage.EXTRACTING, StageEventStatus.SUCCESS, "Extraction complete", {"provider": model_meta.get("provider")})

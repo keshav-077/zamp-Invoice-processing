@@ -1,13 +1,13 @@
 # Invoice Processing — From PDF to Decision
 
-Explainable invoice-processing workflow for AP teams. Upload a vendor invoice PDF, extract fields via multimodal AI, match to purchase orders with deterministic controls, and receive **APPROVE**, **REVIEW**, or **REJECT** with full evidence.
+Explainable invoice-processing workflow for AP teams. Upload a vendor invoice PDF or image, extract fields via multimodal AI, match to purchase orders with deterministic controls, and receive **APPROVE**, **REVIEW**, or **REJECT** with full evidence.
 
 ## Architecture
 
 - **Frontend:** Next.js 15 + TypeScript + Tailwind (`apps/web`)
 - **Backend:** FastAPI + Python (`apps/api`)
 - **Database:** SQLite (local dev) or PostgreSQL (Docker/production)
-- **AI:** Gemini primary with Groq/OpenRouter fallbacks; mock extraction for CI/demo without API keys
+- **AI:** Gemini primary with Groq/OpenRouter fallbacks; mock extraction for CI without API keys
 
 ## Quick Start
 
@@ -42,45 +42,74 @@ cp .env.example .env
 docker compose up --build
 ```
 
-## Demo Scenarios
+## Supported Upload Formats
 
-Upload PDFs named by scenario (mock extraction maps filename → fixture data):
-
-| File | Expected |
-|------|----------|
-| inv-001.pdf | APPROVE — exact PO match |
-| inv-002.pdf | APPROVE — no PO number, vendor+amount match |
-| inv-003.pdf | REVIEW — ambiguous POs |
-| inv-004.pdf | APPROVE — split invoice |
-| inv-005.pdf | REVIEW — over tolerance |
-| inv-006.pdf | REJECT — duplicate |
-| inv-007.pdf | REVIEW — wrong vendor |
-| inv-008.pdf | REVIEW — low extraction confidence |
-
-Generate demo PDFs:
-
-```bash
-cd apps/api
-python scripts/generate_demo_pdfs.py
-```
-
-## Demo Accounts
-
-| User | Password | Role |
-|------|----------|------|
-| analyst | analyst123 | AP Analyst |
-| manager | manager123 | AP Manager |
-| admin | admin123 | Admin |
-| auditor | auditor123 | Auditor |
+- PDF (multi-page, up to 10 pages)
+- PNG, JPG/JPEG, WebP (single-page image invoices)
+- Max file size: 20 MB
 
 ## API Endpoints
 
-- `POST /api/runs` — upload invoice PDF
+- `POST /api/runs` — upload invoice PDF or image
 - `GET /api/runs/{id}` — run detail + evidence
 - `GET /api/runs/{id}/events/stream` — SSE live timeline
 - `POST /api/runs/{id}/review` — manual review/override
 - `GET /api/vendors`, `GET /api/pos` — reference data
 - `GET /api/health` — health check
+
+## Deploy to Railway
+
+Deploy the full stack (API + web + Postgres) on [Railway](https://railway.app).
+
+### 1. Create project
+
+1. Push this repo to GitHub.
+2. Create a new Railway project and connect the repository.
+3. Add a **PostgreSQL** plugin to the project.
+
+### 2. API service
+
+1. Add a service from the repo with **Root Directory** set to the repository root.
+2. Set **Config file** to `apps/api/railway.toml` (or use Dockerfile `apps/api/Dockerfile`).
+3. Attach a **volume** mounted at `/data/uploads`.
+4. Set environment variables:
+
+| Variable | Value |
+|----------|-------|
+| `DATABASE_URL` | `${{Postgres.DATABASE_URL}}` (convert to `postgresql+asyncpg://...`) |
+| `STORAGE_PATH` | `/data/uploads` |
+| `CORS_ORIGINS` | Your Railway web service URL |
+| `USE_MOCK_EXTRACTION` | `false` |
+| `GEMINI_API_KEY` / `GROQ_API_KEY` / `OPENROUTER_API_KEY` | At least one required |
+| `JWT_SECRET` | Strong random secret |
+
+5. Generate a public domain for the API service.
+
+### 3. Web service
+
+1. Add a second service with **Root Directory** `apps/web`.
+2. Set **Config file** to `apps/web/railway.toml`.
+3. Set build variable `NEXT_PUBLIC_API_URL` to the API service public URL.
+4. Generate a public domain for the web service.
+
+### 4. Finalize CORS
+
+Update the API service `CORS_ORIGINS` to the web service public URL and redeploy if needed.
+
+### Smoke test
+
+- `GET https://<api-domain>/api/health` returns healthy
+- Open `https://<web-domain>/process` and upload a PDF or PNG
+
+### CLI helper
+
+After installing the Railway CLI (`npm install -g @railway/cli`) and running `railway login`:
+
+```powershell
+.\scripts\deploy-railway.ps1
+```
+
+Then complete the service setup steps printed by the script in the Railway dashboard.
 
 ## Design Principles
 

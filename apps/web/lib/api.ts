@@ -64,10 +64,17 @@ function formatApiError(body: unknown, fallback: string): string {
 }
 
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
-  const res = await fetch(`${API_URL}${path}`, {
-    ...options,
-    headers: { ...(options?.headers || {}) },
-  });
+  let res: Response;
+  try {
+    res = await fetch(`${API_URL}${path}`, {
+      ...options,
+      headers: { ...(options?.headers || {}) },
+    });
+  } catch {
+    throw new Error(
+      `Cannot reach the API at ${API_URL}. Start the backend with: cd apps/api && .venv\\Scripts\\Activate.ps1 && uvicorn app.main:app --reload --host 0.0.0.0 --port 8000`
+    );
+  }
   if (!res.ok) {
     const body: unknown = await res.json().catch(() => null);
     throw new Error(formatApiError(body, res.statusText || "Request failed"));

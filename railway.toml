@@ -1,0 +1,5 @@
+# Railway multi-service project layout.
+# Create two services from this repo and point each at the service-specific railway.toml.
+
+[project]
+name = "invoice-processing"

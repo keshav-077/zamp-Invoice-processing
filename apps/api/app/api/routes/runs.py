@@ -10,7 +10,7 @@ from app.db.models import ProcessingRun, RunEvent, POCandidateRecord, Validation
 from app.db.session import get_db, AsyncSessionLocal
 from app.domain.enums import RunStatus
 from app.domain.schemas import RunCreateResponse, RunDetail, RunSummary
-from app.services.documents import DocumentProcessor
+from app.services.documents import DocumentProcessor, is_allowed_extension
 from app.services.workflow import WorkflowOrchestrator
 
 router = APIRouter(prefix="/api/runs", tags=["runs"])
@@ -35,8 +35,8 @@ async def create_run(
     db: AsyncSession = Depends(get_db),
     user: dict = Depends(get_current_user),
 ):
-    if not file.filename or not file.filename.lower().endswith(".pdf"):
-        raise HTTPException(status_code=400, detail="Only PDF files are accepted.")
+    if not file.filename or not is_allowed_extension(file.filename):
+        raise HTTPException(status_code=400, detail="Only PDF, PNG, JPG, and WebP files are accepted.")
     content = await file.read()
     run = ProcessingRun(file_name=file.filename, status=RunStatus.PENDING.value)
     db.add(run)

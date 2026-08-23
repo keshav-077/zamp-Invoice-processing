@@ -21,7 +21,7 @@ const statusColor = {
 
 const STAGE_LABELS: Record<string, string> = {
   uploaded: "Uploaded",
-  rendering: "PDF Rendering",
+  rendering: "Document Preparation",
   extracting: "Multimodal Extraction",
   verifying: "Field Verification",
   vendor_resolved: "Vendor Resolution",
