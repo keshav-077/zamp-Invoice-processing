@@ -1,4 +1,5 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+// Same-origin /api/* requests are proxied to the backend via next.config.js rewrites.
+const API_URL = "";
 
 export type RunSummary = {
   run_id: string;
@@ -72,7 +73,7 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
     });
   } catch {
     throw new Error(
-      `Cannot reach the API at ${API_URL}. Start the backend with: cd apps/api && .venv\\Scripts\\Activate.ps1 && uvicorn app.main:app --reload --host 0.0.0.0 --port 8000`
+      "Cannot reach the API. Ensure NEXT_PUBLIC_API_URL is set on the web service and redeploy."
     );
   }
   if (!res.ok) {
